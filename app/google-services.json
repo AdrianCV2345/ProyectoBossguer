@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "738805704936",
+    "project_id": "bossguer",
+    "storage_bucket": "bossguer.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738805704936:android:cdec7c1abb0915713dc15d",
+        "android_client_info": {
+          "package_name": "com.example.bossguer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZHbAtg8tEhp9e4Xm4Z79j-KLihfbYdp8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
