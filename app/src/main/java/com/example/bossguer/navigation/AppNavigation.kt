@@ -18,6 +18,7 @@ import com.example.bossguer.features.loginPart.presentation.LoginPartScreen
 import com.example.bossguer.features.loginPart.presentation.LoginPartViewModel
 import com.example.bossguer.features.menu.presentation.MenuScreen
 import com.example.bossguer.features.menu.presentation.MenuViewModel
+import com.example.bossguer.features.registro.presentation.SplashScreenRegister.RegisterSplashScreen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -52,11 +53,26 @@ fun AppNavigation() {
 
         }
 
-
         composable(Screen.Registro.route) {
             val registroViewModel: RegistroViewModel = koinViewModel()
-            RegistroScreen(viewModel = registroViewModel)
+            RegistroScreen(
+                viewModel = registroViewModel,
+                onRegistrationSuccess = {
+                    navController.navigate(Screen.RegisterSuccessSplash.route)
+                }
+            )
         }
+
+        composable(Screen.RegisterSuccessSplash.route) {
+            RegisterSplashScreen(
+                onNavigateToMenu = {
+                    navController.navigate(Screen.Menu.route) {
+                        popUpTo(Screen.Login.route)
+                    }
+                }
+            )
+        }
+
         composable(Screen.Menu.route) {
             val menuViewModel: MenuViewModel = koinViewModel()
             MenuScreen(
@@ -72,7 +88,7 @@ fun AppNavigation() {
             OrderScreen(
                 cartViewModel = cartViewModel,
                 onBack = { navController.popBackStack() },
-                onOrderSuccess = { navController.navigate("orderSuccess") }
+                onOrderSuccess = { navController.navigate("orderSuccess") } // Puedes crear un Screen.OrderSuccess.route para esto
             )
         }
         composable("orderSuccess") {

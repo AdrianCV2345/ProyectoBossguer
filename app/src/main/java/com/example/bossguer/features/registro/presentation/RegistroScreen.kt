@@ -19,7 +19,10 @@ import androidx.compose.ui.unit.sp
 import com.example.bossguer.R
 
 @Composable
-fun RegistroScreen(viewModel: RegistroViewModel) {
+fun RegistroScreen(
+    viewModel: RegistroViewModel,
+    onRegistrationSuccess: () -> Unit
+) {
     val ci by viewModel.ci.collectAsState()
     val nombre by viewModel.nombre.collectAsState()
     val gmail by viewModel.gmail.collectAsState()
@@ -28,6 +31,14 @@ fun RegistroScreen(viewModel: RegistroViewModel) {
     val ciudad by viewModel.ciudad.collectAsState()
     val usuario by viewModel.usuario.collectAsState()
     val contrasena by viewModel.contrasena.collectAsState()
+
+    val registrationState by viewModel.registrationState.collectAsState()
+
+    LaunchedEffect(registrationState) {
+        if (registrationState is RegisterUiState.Success) {
+            onRegistrationSuccess()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -75,7 +86,7 @@ fun RegistroScreen(viewModel: RegistroViewModel) {
             RegistroTextField(label = "Contraseña", value = contrasena, onValueChange = viewModel::onContrasenaChange)
             Spacer(modifier = Modifier.height(32.dp))
             Button(
-                onClick = { viewModel.onOrdenarClick() },
+                onClick = { viewModel.onRegisterClick() }, // Cambiado a onRegisterClick si existe
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .width(220.dp)
@@ -85,7 +96,7 @@ fun RegistroScreen(viewModel: RegistroViewModel) {
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFB347))
             ) {
                 Text(
-                    text = "¡ORDENAR YA!",
+                    text = "¡REGISTRARSE!",
                     fontSize = 18.sp,
                     color = Color.White,
                     fontWeight = FontWeight.Bold

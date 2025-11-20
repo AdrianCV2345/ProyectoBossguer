@@ -87,9 +87,9 @@ class RegistroViewModel(private val registerUseCase: RegisterUseCase) : ViewMode
     // --- Lógica de negocio --- //
 
     /**
-     * Se llama cuando el usuario presiona el botón de registrar ("ORDENAR YA!").
+     * Se llama cuando el usuario presiona el botón de registrar ("¡REGISTRARSE!").
      */
-    fun onOrdenarClick() {
+    fun onRegisterClick() {
         // Validaciones básicas (se pueden mejorar)
         if (gmail.value.isBlank() || contrasena.value.isBlank()) {
             _registrationState.value = RegisterUiState.Error("El correo y la contraseña no pueden estar vacíos.")
