@@ -26,8 +26,8 @@ import com.example.bossguer.R
 fun PerfilScreen(
     onNavigateToSobreNosotros: () -> Unit,
     onNavigateToMenu: () -> Unit,
-    onNavigateToPerfil: () -> Unit
-    // onLogoutClick: () -> Unit
+    onNavigateToPerfil: () -> Unit,
+    onNavigateToTerminos: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
@@ -94,13 +94,13 @@ fun PerfilScreen(
                     ProfileOptionCard(
                         text = "Terminos y condiciones",
                         iconRes = R.drawable.icono_terminos,
-                        onClick = { /* TODO: Navegar a terminos */ }
+                        onClick = onNavigateToTerminos // <--- Conectado
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     ProfileOptionCard(
                         text = "Políticas y privacidad",
                         iconRes = R.drawable.icono_politicas,
-                        onClick = { /* TODO: Navegar a politicas */ }
+                        onClick = onNavigateToTerminos // <--- Conectado
                     )
                 }
             }
@@ -249,5 +249,10 @@ private fun BottomNavItem(iconRes: Int, label: String, onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PerfilScreenPreview() {
-    PerfilScreen(onNavigateToSobreNosotros = {}, onNavigateToMenu = {}, onNavigateToPerfil = {})
+    PerfilScreen(
+        onNavigateToSobreNosotros = {},
+        onNavigateToMenu = {},
+        onNavigateToPerfil = {},
+        onNavigateToTerminos = {}
+    )
 }

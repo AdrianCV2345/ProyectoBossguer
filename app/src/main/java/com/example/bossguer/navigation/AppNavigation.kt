@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.bossguer.features.SobreNosotros.presentation.SobreNosotrosScreen
+import com.example.bossguer.features.PoliticasYPrivacidad.TerminosScreen
 import com.example.bossguer.features.carrito.ui.CartViewModel
 import com.example.bossguer.features.carrito.ui.OrderScreen
 import com.example.bossguer.features.carrito.ui.OrderSuccessScreen
@@ -101,7 +102,16 @@ fun AppNavigation() {
             PerfilScreen(
                  onNavigateToMenu = { navController.navigate(Screen.Menu.route) },
                  onNavigateToSobreNosotros = { navController.navigate(Screen.SobreNosotros.route) },
-                 onNavigateToPerfil = { /* Ya estamos aquí */ }
+                 onNavigateToPerfil = { /* Ya estamos aquí */ },
+                 onNavigateToTerminos = { navController.navigate(Screen.Terminos.route) }
+            )
+        }
+
+        composable(Screen.Terminos.route) {
+            TerminosScreen(
+                onNavigateToMenu = { navController.navigate(Screen.Menu.route) },
+                onNavigateToSobreNosotros = { navController.navigate(Screen.SobreNosotros.route) },
+                onNavigateToPerfil = { navController.navigate(Screen.Perfil.route) }
             )
         }
 

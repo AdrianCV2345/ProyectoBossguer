@@ -13,4 +13,5 @@ sealed class Screen(val route: String) {
     object RegisterSuccessSplash : Screen("register_success_splash")
     object SobreNosotros : Screen("sobre_nosotros")
     object Perfil : Screen("perfil")
+    object Terminos : Screen("terminos")
 }
