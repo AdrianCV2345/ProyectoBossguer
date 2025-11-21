@@ -17,6 +17,7 @@ import com.example.bossguer.features.loginPart.presentation.LoginPartScreen
 import com.example.bossguer.features.loginPart.presentation.LoginPartViewModel
 import com.example.bossguer.features.menu.presentation.MenuScreen
 import com.example.bossguer.features.menu.presentation.MenuViewModel
+import com.example.bossguer.features.perfil.presentation.PerfilScreen
 import com.example.bossguer.features.registro.presentation.RegistroScreen
 import com.example.bossguer.features.registro.presentation.RegistroViewModel
 import com.example.bossguer.features.registro.presentation.SplashScreenRegister.RegisterSplashScreen
@@ -83,14 +84,24 @@ fun AppNavigation() {
                 onCartClick = { navController.navigate(Screen.Order.route) },
                 onProductAdded = {},
                 onNavigateToSobreNosotros = { navController.navigate(Screen.SobreNosotros.route) },
-                onNavigateToMenu = { /* Ya estamos aquí */ }
+                onNavigateToMenu = { /* Ya estamos aquí */ },
+                onNavigateToPerfil = { navController.navigate(Screen.Perfil.route) }
             )
         }
 
         composable(Screen.SobreNosotros.route) {
             SobreNosotrosScreen(
                 onNavigateToMenu = { navController.navigate(Screen.Menu.route) },
-                onNavigateToSobreNosotros = { /* Ya estamos aquí */ }
+                onNavigateToSobreNosotros = { /* Ya estamos aquí */ },
+                onNavigateToPerfil = { navController.navigate(Screen.Perfil.route) }
+            )
+        }
+
+        composable(Screen.Perfil.route) {
+            PerfilScreen(
+                 onNavigateToMenu = { navController.navigate(Screen.Menu.route) },
+                 onNavigateToSobreNosotros = { navController.navigate(Screen.SobreNosotros.route) },
+                 onNavigateToPerfil = { /* Ya estamos aquí */ }
             )
         }
 
@@ -98,7 +109,7 @@ fun AppNavigation() {
             OrderScreen(
                 cartViewModel = cartViewModel,
                 onBack = { navController.popBackStack() },
-                onOrderSuccess = { navController.navigate("orderSuccess") } 
+                onOrderSuccess = { navController.navigate("orderSuccess") }
             )
         }
         composable("orderSuccess") {

@@ -52,7 +52,8 @@ fun MenuScreen(
     onCartClick: () -> Unit,
     onProductAdded: () -> Unit,
     onNavigateToSobreNosotros: () -> Unit,
-    onNavigateToMenu: () -> Unit
+    onNavigateToMenu: () -> Unit,
+    onNavigateToPerfil: () -> Unit
 ) {
     val burgers = listOf(
         Burger("Bossguer", "La original, inigualable e inconfundible.", "35,00 Bs.", R.drawable.burger_bossguer),
@@ -185,7 +186,7 @@ fun MenuScreen(
                 ) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "ACLARACIÓN: Todas nuestras Boss incluyen porción de papas :)",
+                        text = "ACLARACIÓN: Todas nuestras Boss incluyen porción de papas :)" ,
                         fontSize = 12.sp,
                         color = Color(0xFF5A2A06),
                         modifier = Modifier.padding(vertical = 8.dp, horizontal = 8.dp)
@@ -252,7 +253,7 @@ fun MenuScreen(
             BottomNavItem(iconRes = R.drawable.ic_nosotros, label = "Sobre Nosotros", onClick = onNavigateToSobreNosotros)
             BottomNavItem(iconRes = R.drawable.ic_menu, label = "Menu", onClick = onNavigateToMenu)
             BottomNavItem(iconRes = R.drawable.ic_chat, label = "Chat", onClick = {})
-            BottomNavItem(iconRes = R.drawable.ic_cuenta, label = "Cuenta", onClick = {})
+            BottomNavItem(iconRes = R.drawable.ic_cuenta, label = "Cuenta", onClick = onNavigateToPerfil)
         }
     }
 }

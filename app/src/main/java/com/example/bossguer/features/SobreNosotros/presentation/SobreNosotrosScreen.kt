@@ -23,14 +23,15 @@ import com.example.bossguer.R
 @Composable
 fun SobreNosotrosScreen(
     onNavigateToMenu: () -> Unit,
-    onNavigateToSobreNosotros: () -> Unit
+    onNavigateToSobreNosotros: () -> Unit,
+    onNavigateToPerfil: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.White)
-                .padding(bottom = 80.dp)
+                .padding(bottom = 80.dp) 
         ) {
             item {
                 Header()
@@ -95,7 +96,8 @@ fun SobreNosotrosScreen(
         BottomNav(
             modifier = Modifier.align(Alignment.BottomCenter),
             onNavigateToMenu = onNavigateToMenu,
-            onNavigateToSobreNosotros = onNavigateToSobreNosotros
+            onNavigateToSobreNosotros = onNavigateToSobreNosotros,
+            onNavigateToPerfil = onNavigateToPerfil
         )
     }
 }
@@ -159,19 +161,20 @@ private fun SectionTitleBar(title: String, color: Color) {
 private fun BottomNav(
     modifier: Modifier = Modifier,
     onNavigateToMenu: () -> Unit,
-    onNavigateToSobreNosotros: () -> Unit
+    onNavigateToSobreNosotros: () -> Unit,
+    onNavigateToPerfil: () -> Unit
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(Color(0xFFF79E2E)) 
+            .background(Color(0xFFF79E2E))
             .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
         BottomNavItem(iconRes = R.drawable.ic_nosotros, label = "Sobre nosotros", onClick = onNavigateToSobreNosotros)
         BottomNavItem(iconRes = R.drawable.ic_menu, label = "Menú", onClick = onNavigateToMenu)
-        BottomNavItem(iconRes = R.drawable.ic_cuenta, label = "perfil", onClick = {})
+        BottomNavItem(iconRes = R.drawable.ic_cuenta, label = "perfil", onClick = onNavigateToPerfil)
     }
 }
 
@@ -198,5 +201,5 @@ private fun BottomNavItem(iconRes: Int, label: String, onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun SobreNosotrosScreenPreview() {
-    SobreNosotrosScreen(onNavigateToMenu = {}, onNavigateToSobreNosotros = {})
+    SobreNosotrosScreen(onNavigateToMenu = {}, onNavigateToSobreNosotros = {}, onNavigateToPerfil = {})
 }
