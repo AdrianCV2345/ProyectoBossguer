@@ -47,7 +47,6 @@ class RegistroViewModel(private val registerUseCase: RegisterUseCase) : ViewMode
     private val _contrasena = MutableStateFlow("")
     val contrasena: StateFlow<String> = _contrasena.asStateFlow()
 
-    // --- Estado para el resultado del registro --- //
     private val _registrationState = MutableStateFlow<RegisterUiState>(RegisterUiState.Idle)
     val registrationState: StateFlow<RegisterUiState> = _registrationState.asStateFlow()
 
@@ -84,11 +83,7 @@ class RegistroViewModel(private val registerUseCase: RegisterUseCase) : ViewMode
         _contrasena.update { newValue }
     }
 
-    // --- Lógica de negocio --- //
 
-    /**
-     * Se llama cuando el usuario presiona el botón de registrar ("¡REGISTRARSE!").
-     */
     fun onRegisterClick() {
         // Validaciones básicas (se pueden mejorar)
         if (gmail.value.isBlank() || contrasena.value.isBlank()) {
@@ -105,7 +100,6 @@ class RegistroViewModel(private val registerUseCase: RegisterUseCase) : ViewMode
                 is Result.Success<*> -> RegisterUiState.Success(result.data as User)
                 is Result.Error -> {
                     val errorMessage = result.exception.message ?: "Error desconocido"
-                    // ¡AÑADIDO! Imprimimos el error en el Logcat para poder verlo.
                     Log.e("RegistroViewModel", "Error en el registro: $errorMessage")
                     RegisterUiState.Error(errorMessage)
                 }

@@ -15,7 +15,7 @@ class RegisterRemoteDataSource(private val firebaseAuth: FirebaseAuth) : IRegist
                 return Result.Success(User(userId = firebaseUser.uid, email = firebaseUser.email ?: ""))
             } else {
                 // CORRECCIÓN: Especificar el tipo genérico para Error
-                return Result.Error<User>(Exception("Error: Firebase user is null after registration."))
+                return Result.Error<User>(Exception("Error: El usuario es nulo."))
             }
         } catch (e: Exception) {
             // CORRECIÓN: Especificar el tipo genérico para Error

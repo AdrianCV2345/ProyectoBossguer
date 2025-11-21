@@ -84,7 +84,7 @@ fun LoginPartScreen(viewModel: LoginPartViewModel, navController: NavHostControl
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "Usuario",
+                        text = "Correo electrónico",
                         fontSize = 18.sp,
                         color = Color(0xFF222222),
                         fontWeight = FontWeight.Normal
@@ -93,7 +93,7 @@ fun LoginPartScreen(viewModel: LoginPartViewModel, navController: NavHostControl
                     OutlinedTextField(
                         value = usuario,
                         onValueChange = onUsuarioChange,
-                        placeholder = { Text("12345678", color = Color(0xFFBDBDBD)) },
+                        placeholder = { Text("ejemplo@gmail.com", color = Color(0xFFBDBDBD)) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),

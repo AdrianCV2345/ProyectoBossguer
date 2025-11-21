@@ -1,5 +1,6 @@
 package com.example.bossguer.features.registro.presentation
 
+import android.R.attr.text
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -86,7 +87,7 @@ fun RegistroScreen(
             RegistroTextField(label = "Contraseña", value = contrasena, onValueChange = viewModel::onContrasenaChange)
             Spacer(modifier = Modifier.height(32.dp))
             Button(
-                onClick = { viewModel.onRegisterClick() }, // Cambiado a onRegisterClick si existe
+                onClick = { viewModel.onRegisterClick() },
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .width(220.dp)

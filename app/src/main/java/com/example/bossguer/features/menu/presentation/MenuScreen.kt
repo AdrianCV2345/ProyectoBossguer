@@ -210,9 +210,18 @@ fun MenuScreen(
                             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                         )
                     }
-                    MenuDrinkRow("Agua", "9,00 Bs.")
-                    MenuDrinkRow("Jugo", "7,00 Bs.")
-                    MenuDrinkRow("Soda", "9,00 Bs.")
+                    MenuDrinkRow(name = "Agua", price = "9,00 Bs.", onAddToCart = {
+                        val product = Product(id = "Agua", name = "Agua", price = 9.0, image = R.drawable.ic_agua)
+                        cartViewModel.addProduct(product)
+                    })
+                    MenuDrinkRow(name = "Jugo", price = "7,00 Bs.", onAddToCart = {
+                        val product = Product(id = "Jugo", name = "Jugo", price = 7.0, image = R.drawable.ic_jugo)
+                        cartViewModel.addProduct(product)
+                    })
+                    MenuDrinkRow(name = "Soda", price = "9,00 Bs.", onAddToCart = {
+                        val product = Product(id = "Soda", name = "Soda", price = 9.0, image = R.drawable.ic_soda)
+                        cartViewModel.addProduct(product)
+                    })
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -226,8 +235,14 @@ fun MenuScreen(
                             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                         )
                     }
-                    MenuDrinkRow("Papas", "9,00 Bs.")
-                    MenuDrinkRow("Aros de Cebolla", "9,00 Bs.")
+                    MenuDrinkRow(name = "Papas", price = "9,00 Bs.", onAddToCart = {
+                        val product = Product(id = "Papas", name = "Papas", price = 9.0, image = R.drawable.ic_papas)
+                        cartViewModel.addProduct(product)
+                    })
+                    MenuDrinkRow(name = "Aros de Cebolla", price = "9,00 Bs.", onAddToCart = {
+                        val product = Product(id = "Aros de Cebolla", name = "Aros de Cebolla", price = 9.0, image = R.drawable.ic_aros_de_cebolla)
+                        cartViewModel.addProduct(product)
+                    })
                     Spacer(modifier = Modifier.height(32.dp))
                 }
             }
@@ -355,7 +370,7 @@ fun MenuBurgerCard(
 }
 
 @Composable
-fun MenuDrinkRow(name: String, price: String) {
+fun MenuDrinkRow(name: String, price: String, onAddToCart: () -> Unit) { // <-- 1. AÑADIDO onAddToCart
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -377,7 +392,7 @@ fun MenuDrinkRow(name: String, price: String) {
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(end = 8.dp)
             )
-            IconButton(onClick = { /* TODO: Agregar */ }) {
+            IconButton(onClick = onAddToCart) { // <-- 2. USADO onAddToCart
                 Icon(
                     painter = painterResource(id = R.drawable.ic_plus),
                     contentDescription = "Agregar",
