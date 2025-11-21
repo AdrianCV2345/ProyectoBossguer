@@ -1,3 +1,4 @@
+
 package com.example.bossguer.features.perfil.presentation
 
 import androidx.compose.foundation.Image
@@ -27,7 +28,8 @@ fun PerfilScreen(
     onNavigateToSobreNosotros: () -> Unit,
     onNavigateToMenu: () -> Unit,
     onNavigateToPerfil: () -> Unit,
-    onNavigateToTerminos: () -> Unit
+    onNavigateToTerminos: () -> Unit,
+    onLogout: () -> Unit // <-- Acción de logout añadida
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
@@ -94,13 +96,13 @@ fun PerfilScreen(
                     ProfileOptionCard(
                         text = "Terminos y condiciones",
                         iconRes = R.drawable.icono_terminos,
-                        onClick = onNavigateToTerminos // <--- Conectado
+                        onClick = onNavigateToTerminos
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     ProfileOptionCard(
                         text = "Políticas y privacidad",
                         iconRes = R.drawable.icono_politicas,
-                        onClick = onNavigateToTerminos // <--- Conectado
+                        onClick = onNavigateToTerminos
                     )
                 }
             }
@@ -116,7 +118,7 @@ fun PerfilScreen(
                         .clip(RoundedCornerShape(12.dp))
                         .border(1.dp, Color.LightGray, RoundedCornerShape(12.dp))
                         .background(Color.White)
-                        .clickable { /* onLogoutClick() */ }
+                        .clickable { onLogout() } // <-- Conectado
                         .padding(vertical = 16.dp),
                     contentAlignment = Alignment.Center
                 ) {
@@ -253,6 +255,7 @@ fun PerfilScreenPreview() {
         onNavigateToSobreNosotros = {},
         onNavigateToMenu = {},
         onNavigateToPerfil = {},
-        onNavigateToTerminos = {}
+        onNavigateToTerminos = {},
+        onLogout = {}
     )
 }

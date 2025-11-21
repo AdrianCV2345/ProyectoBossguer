@@ -1,3 +1,4 @@
+
 package com.example.bossguer.navigation
 
 sealed class Screen(val route: String) {
@@ -14,4 +15,5 @@ sealed class Screen(val route: String) {
     object SobreNosotros : Screen("sobre_nosotros")
     object Perfil : Screen("perfil")
     object Terminos : Screen("terminos")
+    object LogoutSplash : Screen("logout_splash")
 }

@@ -1,3 +1,4 @@
+
 package com.example.bossguer.navigation
 
 import androidx.compose.runtime.Composable
@@ -16,6 +17,7 @@ import com.example.bossguer.features.login.presentation.LoginViewModel
 import com.example.bossguer.features.login.presentation.SplashScreen.SplashScreen
 import com.example.bossguer.features.loginPart.presentation.LoginPartScreen
 import com.example.bossguer.features.loginPart.presentation.LoginPartViewModel
+import com.example.bossguer.features.logout.presentation.LogoutSplashScreen
 import com.example.bossguer.features.menu.presentation.MenuScreen
 import com.example.bossguer.features.menu.presentation.MenuViewModel
 import com.example.bossguer.features.perfil.presentation.PerfilScreen
@@ -103,8 +105,18 @@ fun AppNavigation() {
                  onNavigateToMenu = { navController.navigate(Screen.Menu.route) },
                  onNavigateToSobreNosotros = { navController.navigate(Screen.SobreNosotros.route) },
                  onNavigateToPerfil = { /* Ya estamos aquí */ },
-                 onNavigateToTerminos = { navController.navigate(Screen.Terminos.route) }
+                 onNavigateToTerminos = { navController.navigate(Screen.Terminos.route) },
+                 onLogout = { navController.navigate(Screen.LogoutSplash.route) }
             )
+        }
+
+        composable(Screen.LogoutSplash.route) {
+            LogoutSplashScreen(onTimeout = {
+                navController.navigate(Screen.Login.route) {
+                    // Limpia toda la pila de navegación hasta el inicio
+                    popUpTo(0)
+                }
+            })
         }
 
         composable(Screen.Terminos.route) {
