@@ -221,7 +221,6 @@ private fun BottomNav(
     ) {
         BottomNavItem(iconRes = R.drawable.ic_nosotros, label = "Sobre Nosotros", onClick = onNavigateToSobreNosotros)
         BottomNavItem(iconRes = R.drawable.ic_menu, label = "Menu", onClick = onNavigateToMenu)
-        BottomNavItem(iconRes = R.drawable.ic_chat, label = "Chat", onClick = {})
         BottomNavItem(iconRes = R.drawable.ic_cuenta, label = "Cuenta", onClick = onNavigateToPerfil)
     }
 }

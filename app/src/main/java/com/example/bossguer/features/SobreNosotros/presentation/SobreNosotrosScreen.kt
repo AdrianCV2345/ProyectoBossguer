@@ -2,6 +2,7 @@ package com.example.bossguer.features.SobreNosotros.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -167,9 +168,9 @@ private fun BottomNav(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(Color(0xFFF79E2E))
+            .background(Color(0xFFFFB347))
             .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceAround,
+        horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
         BottomNavItem(iconRes = R.drawable.ic_nosotros, label = "Sobre nosotros", onClick = onNavigateToSobreNosotros)
@@ -180,17 +181,18 @@ private fun BottomNav(
 
 @Composable
 private fun BottomNavItem(iconRes: Int, label: String, onClick: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .size(45.dp)
-            .background(Color(0xFFFFB347), shape = CircleShape),
-        contentAlignment = Alignment.Center
-    ) {
-        IconButton(onClick = onClick) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Box(
+            modifier = Modifier
+                .size(45.dp)
+                .background(Color(0xFFFFB347), shape = CircleShape)
+                .clickable(onClick = onClick),
+            contentAlignment = Alignment.Center
+        ) {
             Icon(
                 painter = painterResource(id = iconRes),
                 contentDescription = label,
-                modifier = Modifier.size(28.dp),
+                modifier = Modifier.size(50.dp),
                 tint = Color.White
             )
         }
