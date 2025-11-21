@@ -2,15 +2,19 @@ package com.example.bossguer.features.registro.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bossguer.features.informacionPersonal.domain.model.User
 import com.example.bossguer.features.registro.domain.usecase.RegisterUseCase
-import kotlinx.coroutines.flow.*
+import com.example.bossguer.features.registro.domain.usecase.SaveUserDataUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
 
 class RegistroViewModel(
-    private val registerUseCase: RegisterUseCase
+    private val registerUseCase: RegisterUseCase,
+    private val saveUserDataUseCase: SaveUserDataUseCase
 ) : ViewModel() {
 
     // --- State for TextFields ---
@@ -120,18 +124,28 @@ class RegistroViewModel(
     fun onRegisterClick() {
         viewModelScope.launch {
             _registrationState.value = RegisterUiState.Loading
-            try {
-                // Corrected call: Use only email and password as required by the use case
-                val authResult = registerUseCase(
-                    email = _gmail.value,
-                    password = _contrasena.value
-                )
-                // TODO: Here we should handle the result and save the rest of the user data
-                // For now, we'll just mark it as success if no exception is thrown
-                _registrationState.value = RegisterUiState.Success
-            } catch (e: Exception) {
-                _registrationState.value = RegisterUiState.Error(e.message ?: "Error desconocido")
-            }
+
+            registerUseCase(_gmail.value, _contrasena.value).fold(
+                onSuccess = { firebaseUser ->
+                    val userData = User(
+                        uid = firebaseUser.uid,
+                        ci = _ci.value,
+                        nombre = _nombre.value,
+                        gmail = _gmail.value,
+                        usuario = _usuario.value,
+                        fechaNacimiento = _fechaNacimiento.value,
+                        genero = _genero.value,
+                        ciudad = _ciudad.value
+                    )
+                    saveUserDataUseCase(firebaseUser.uid, userData).fold(
+                        onSuccess = { _registrationState.value = RegisterUiState.Success },
+                        onFailure = { e -> _registrationState.value = RegisterUiState.Error(e.message ?: "Error al guardar datos.") }
+                    )
+                },
+                onFailure = { e ->
+                    _registrationState.value = RegisterUiState.Error(e.message ?: "Error de registro.")
+                }
+            )
         }
     }
 }

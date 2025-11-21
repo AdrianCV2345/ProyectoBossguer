@@ -4,6 +4,9 @@ import androidx.room.Room
 import com.example.bossguer.R
 import com.example.bossguer.data.local.UcbpDatabase
 import com.example.bossguer.features.carrito.ui.CartViewModel
+import com.example.bossguer.features.informacionPersonal.domain.usecase.GetCurrentUserUseCase
+import com.example.bossguer.features.informacionPersonal.domain.usecase.GetUserDataUseCase
+import com.example.bossguer.features.informacionPersonal.presentation.InformacionPersonalViewModel
 import com.example.bossguer.features.loginPart.data.LoginPartRepository
 import com.example.bossguer.features.loginPart.domain.LoginPartUseCase
 import com.example.bossguer.features.loginPart.presentation.LoginPartViewModel
@@ -15,8 +18,10 @@ import com.example.bossguer.features.registro.data.source.remote.IRegisterRemote
 import com.example.bossguer.features.registro.data.source.remote.RegisterRemoteDataSource
 import com.example.bossguer.features.registro.domain.repository.IRegisterRepository
 import com.example.bossguer.features.registro.domain.usecase.RegisterUseCase
+import com.example.bossguer.features.registro.domain.usecase.SaveUserDataUseCase
 import com.example.bossguer.features.registro.presentation.RegistroViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -72,10 +77,11 @@ val appModule = module {
             .build()
     }
 
-    // --- Flujo de Registro ---
-
     // Firebase
     single { FirebaseAuth.getInstance() }
+    single { FirebaseDatabase.getInstance() }
+
+    // --- Flujo de Registro ---
 
     // DAOs
     single { get<UcbpDatabase>().userDao() }
@@ -89,9 +95,20 @@ val appModule = module {
 
     // Casos de Uso
     single { RegisterUseCase(get()) }
+    single { SaveUserDataUseCase(get()) }
 
     // ViewModel
-    viewModel { RegistroViewModel(get()) }
+    viewModel { RegistroViewModel(get(), get()) }
+
+    // --- Flujo de Informacion Personal ---
+
+    // Casos de Uso
+    single { GetCurrentUserUseCase(get()) }
+    single { GetUserDataUseCase(get()) }
+
+    // ViewModel
+    viewModel { InformacionPersonalViewModel(get(), get()) }
+
 
     // --- Flujo de Login Part ---
 
@@ -110,3 +127,4 @@ val appModule = module {
     // --- Flujo de Carrito ---
     viewModel { CartViewModel() }
 }
+// Force re-evaluation

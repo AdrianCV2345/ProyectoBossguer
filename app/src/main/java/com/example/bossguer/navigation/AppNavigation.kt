@@ -1,4 +1,3 @@
-
 package com.example.bossguer.navigation
 
 import androidx.compose.runtime.Composable
@@ -13,6 +12,7 @@ import com.example.bossguer.features.carrito.ui.CartViewModel
 import com.example.bossguer.features.carrito.ui.OrderScreen
 import com.example.bossguer.features.carrito.ui.OrderSuccessScreen
 import com.example.bossguer.features.informacionPersonal.InformacionPersonalScreen
+import com.example.bossguer.features.informacionPersonal.presentation.InformacionPersonalViewModel
 import com.example.bossguer.features.login.presentation.LoginScreen
 import com.example.bossguer.features.login.presentation.LoginViewModel
 import com.example.bossguer.features.login.presentation.SplashScreen.SplashScreen
@@ -130,7 +130,9 @@ fun AppNavigation() {
         }
 
         composable(Screen.InformacionPersonal.route) {
-             InformacionPersonalScreen(
+            val viewModel: InformacionPersonalViewModel = koinViewModel()
+            InformacionPersonalScreen(
+                 viewModel = viewModel,
                  onNavigateToMenu = { navController.navigate(Screen.Menu.route) },
                  onNavigateToSobreNosotros = { navController.navigate(Screen.SobreNosotros.route) },
                  onNavigateToPerfil = { navController.navigate(Screen.Perfil.route) }

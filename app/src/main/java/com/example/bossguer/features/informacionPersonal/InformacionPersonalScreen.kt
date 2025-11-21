@@ -1,242 +1,201 @@
 package com.example.bossguer.features.informacionPersonal
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bossguer.R
-import com.example.bossguer.ui.theme.BossguerTheme
+import com.example.bossguer.features.informacionPersonal.domain.model.User
+import com.example.bossguer.features.informacionPersonal.presentation.InformacionPersonalUiState
+import com.example.bossguer.features.informacionPersonal.presentation.InformacionPersonalViewModel
 
 @Composable
 fun InformacionPersonalScreen(
-    onNavigateToSobreNosotros: () -> Unit,
+    viewModel: InformacionPersonalViewModel,
     onNavigateToMenu: () -> Unit,
-    onNavigateToPerfil: () -> Unit,
+    onNavigateToSobreNosotros: () -> Unit,
+    onNavigateToPerfil: () -> Unit
 ) {
-    Box(
-        modifier = Modifier
+    val uiState by viewModel.uiState.collectAsState()
+
+    Scaffold(
+        bottomBar = {
+            BottomNavigationBar(
+                onNavigateToMenu = onNavigateToMenu,
+                onNavigateToSobreNosotros = onNavigateToSobreNosotros,
+                onNavigateToPerfil = onNavigateToPerfil
+            )
+        }
+    ) { paddingValues ->
+        Box(modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 80.dp), // Espacio para la barra de navegación
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            item {
-                TopAppBarInfo()
-                Spacer(modifier = Modifier.height(24.dp))
-            }
-
-            item {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                ) {
-                    // --- SECCIÓN PERFIL ---
-                    Text(
-                        text = "Perfil",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(
-                        text = "Nombre de usuario:",
-                        fontSize = 16.sp,
-                        color = Color.Black
-                    )
-                    Text(
-                        text = "12345678",
-                        fontSize = 14.sp,
-                        color = Color.Gray,
-                        modifier = Modifier.padding(start = 8.dp)
-                    )
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    // --- SECCIÓN MIS DATOS ---
-                    Text(
-                        text = "Mis datos",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
+            .padding(paddingValues)) {
+            when (val state = uiState) {
+                is InformacionPersonalUiState.Loading -> {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
-            }
-
-            // Lista de datos personales
-            item { InfoRow("CI:", "12345678") }
-            item { InfoRow("Nombre:", "Pedro Perez") }
-            item { InfoRow("Gmail:", "pedroboss@gmail.com") }
-            item { InfoRow("Cumpleaños:", "01/01/2024") }
-            item { InfoRow("Género:", "Masculino") }
-            item { InfoRow("Ciudad:", "Cochabamba") }
-            item { InfoRow("Usuario:", "12345678") }
-            item { InfoRow("Contraseña:", "megustalaburguer123") }
-
-            item {
-                Spacer(modifier = Modifier.height(32.dp))
-                // --- BOTÓN EDITAR DATOS ---
-                Button(
-                    onClick = { /* TODO: Acción de editar datos */ },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                        .height(50.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.White
-                    ),
-                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp),
-                    border = BorderStroke(1.dp, Color.LightGray)
-                ) {
-                    Text("Editar datos", color = Color.Black, fontSize = 16.sp)
+                is InformacionPersonalUiState.Error -> {
+                    Text(
+                        text = "Error: ${state.message}",
+                        color = Color.Red,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
                 }
-                Spacer(modifier = Modifier.height(32.dp))
+                is InformacionPersonalUiState.Success -> {
+                    InformacionPersonalContent(user = state.user)
+                }
             }
         }
-
-        // --- BARRA DE NAVEGACIÓN INFERIOR ---
-        BottomNavigationBar(
-            modifier = Modifier.align(Alignment.BottomCenter),
-            onNavigateToSobreNosotros = onNavigateToSobreNosotros,
-            onNavigateToMenu = onNavigateToMenu,
-            onNavigateToPerfil = onNavigateToPerfil
-        )
     }
 }
 
 @Composable
-private fun TopAppBarInfo() {
+fun InformacionPersonalContent(user: User) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+        item { Header() }
+        item { Spacer(modifier = Modifier.height(24.dp)) }
+        item { ProfileSection(username = user.usuario) }
+        item { Spacer(modifier = Modifier.height(24.dp)) }
+        item { MyDataSection(user = user) }
+        item { Spacer(modifier = Modifier.height(32.dp)) }
+        item { EditDataButton() }
+        item { Spacer(modifier = Modifier.height(16.dp)) }
+    }
+}
+
+@Composable
+fun Header() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp)
+            .height(80.dp)
             .background(Color(0xFFA3121C)),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = "Informacion personal",
             color = Color.White,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold
         )
     }
 }
 
 @Composable
-private fun InfoRow(label: String, value: String) {
+fun ProfileSection(username: String) {
+    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+        Text(text = "Perfil", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.Black)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = "Nombre de usuario:", fontSize = 16.sp, color = Color.Black)
+        Text(text = username, fontSize = 16.sp, color = Color.Gray)
+    }
+}
+
+@Composable
+fun MyDataSection(user: User) {
+    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+        Text(text = "Mis datos", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.Black)
+        Spacer(modifier = Modifier.height(16.dp))
+        DataField(label = "CI:", value = user.ci)
+        DataField(label = "Nombre:", value = user.nombre)
+        DataField(label = "Gmail:", value = user.gmail)
+        DataField(label = "Cumpleaños:", value = user.fechaNacimiento)
+        DataField(label = "Género:", value = user.genero)
+        DataField(label = "Ciudad:", value = user.ciudad)
+        DataField(label = "Usuario:", value = user.usuario)
+        DataField(label = "Contraseña:", value = "●●●●●●●●●●") // Never show the real password
+    }
+}
+
+@Composable
+fun DataField(label: String, value: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 8.dp)
-            .background(Color(0xFFFEF8F2), RoundedCornerShape(12.dp))
-            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .padding(vertical = 4.dp)
+            .background(Color(0xFFFEF8F2), RoundedCornerShape(8.dp))
+            .padding(16.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = label,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                fontSize = 16.sp
-            )
-            Text(
-                text = value,
-                color = Color(0xFFA8A8A8),
-                fontSize = 16.sp
-            )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = label, fontWeight = FontWeight.Bold, color = Color.Black, modifier = Modifier.weight(0.4f))
+            Text(text = value, color = Color(0xFFA8A8A8), modifier = Modifier.weight(0.6f))
         }
     }
 }
 
 @Composable
-private fun BottomNavigationBar(
-    modifier: Modifier = Modifier,
-    onNavigateToSobreNosotros: () -> Unit,
+fun EditDataButton() {
+    Button(
+        onClick = { /* TODO: Implement edit functionality */ },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .height(50.dp),
+        shape = RoundedCornerShape(8.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp, pressedElevation = 2.dp),
+        border = BorderStroke(1.dp, Color.LightGray)
+    ) {
+        Text(text = "Editar datos", color = Color.Black, fontSize = 16.sp)
+    }
+}
+
+@Composable
+fun BottomNavigationBar(
     onNavigateToMenu: () -> Unit,
-    onNavigateToPerfil: () -> Unit,
+    onNavigateToSobreNosotros: () -> Unit,
+    onNavigateToPerfil: () -> Unit
 ) {
     Row(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFFF79E2E))
-            .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly,
+            .height(70.dp)
+            .background(Color(0xFFF79E2E)),
+        horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        BottomNavItem(
-            iconRes = R.drawable.ic_nosotros,
-            label = "Sobre Nosotros",
-            onClick = onNavigateToSobreNosotros
-        )
-        BottomNavItem(
-            iconRes = R.drawable.ic_menu,
-            label = "Menú",
-            onClick = onNavigateToMenu
-        )
-        // La cuenta es la sección activa
-        BottomNavItem(
-            iconRes = R.drawable.ic_cuenta,
-            label = "Cuenta",
-            onClick = onNavigateToPerfil,
-            isSelected = true
-        )
+        BottomNavItem(iconRes = R.drawable.ic_nosotros, label = "Sobre Nosotros", onClick = onNavigateToSobreNosotros)
+        BottomNavItem(iconRes = R.drawable.ic_menu, label = "Menú", onClick = onNavigateToMenu)
+        BottomNavItem(iconRes = R.drawable.ic_cuenta, label = "Cuenta", onClick = onNavigateToPerfil, isSelected = true)
     }
 }
 
 @Composable
-private fun BottomNavItem(
-    iconRes: Int,
-    label: String,
-    onClick: () -> Unit,
-    isSelected: Boolean = false
-) {
-    IconButton(onClick = onClick) {
-        Box(
-            modifier = Modifier
-                .size(50.dp)
-                .background(
-                    if (isSelected) Color(0xFFA3121C) else Color.Transparent,
-                    shape = CircleShape
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                painter = painterResource(id = iconRes),
-                contentDescription = label,
-                tint = Color.White,
-                modifier = Modifier.size(30.dp)
-            )
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun InformacionPersonalScreenPreview() {
-    BossguerTheme {
-        InformacionPersonalScreen({}, {}, {})
+fun BottomNavItem(iconRes: Int, label: String, onClick: () -> Unit, isSelected: Boolean = false) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.clickable(onClick = onClick)
+    ) {
+        Image(
+            painter = painterResource(id = iconRes),
+            contentDescription = label,
+            modifier = Modifier.size(30.dp),
+            colorFilter = if (isSelected) ColorFilter.tint(Color(0xFFA3121C)) else null
+        )
+        Text(text = label, color = Color.White, fontSize = 12.sp, textAlign = TextAlign.Center)
     }
 }
