@@ -29,7 +29,8 @@ fun PerfilScreen(
     onNavigateToMenu: () -> Unit,
     onNavigateToPerfil: () -> Unit,
     onNavigateToTerminos: () -> Unit,
-    onLogout: () -> Unit // <-- Acción de logout añadida
+    onLogout: () -> Unit,
+    onNavigateToInformacionPersonal: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
@@ -72,7 +73,7 @@ fun PerfilScreen(
                     ProfileOptionCard(
                         text = "Información personal",
                         iconRes = R.drawable.icono_informacion,
-                        onClick = { /* TODO: Navegar a info personal */ }
+                        onClick = onNavigateToInformacionPersonal,
                     )
                 }
             }
@@ -148,8 +149,9 @@ fun PerfilTopAppBar() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp) // Aprox 10%
             .background(Color(0xFFA3121C))
+            .statusBarsPadding() // <-- ARREGLO: Añade padding para la barra de estado
+            .height(60.dp)
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -256,6 +258,7 @@ fun PerfilScreenPreview() {
         onNavigateToMenu = {},
         onNavigateToPerfil = {},
         onNavigateToTerminos = {},
-        onLogout = {}
+        onLogout = {},
+        onNavigateToInformacionPersonal = {}
     )
 }

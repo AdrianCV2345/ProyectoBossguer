@@ -12,6 +12,7 @@ import com.example.bossguer.features.PoliticasYPrivacidad.TerminosScreen
 import com.example.bossguer.features.carrito.ui.CartViewModel
 import com.example.bossguer.features.carrito.ui.OrderScreen
 import com.example.bossguer.features.carrito.ui.OrderSuccessScreen
+import com.example.bossguer.features.informacionPersonal.InformacionPersonalScreen
 import com.example.bossguer.features.login.presentation.LoginScreen
 import com.example.bossguer.features.login.presentation.LoginViewModel
 import com.example.bossguer.features.login.presentation.SplashScreen.SplashScreen
@@ -106,7 +107,8 @@ fun AppNavigation() {
                  onNavigateToSobreNosotros = { navController.navigate(Screen.SobreNosotros.route) },
                  onNavigateToPerfil = { /* Ya estamos aquí */ },
                  onNavigateToTerminos = { navController.navigate(Screen.Terminos.route) },
-                 onLogout = { navController.navigate(Screen.LogoutSplash.route) }
+                 onLogout = { navController.navigate(Screen.LogoutSplash.route) },
+                 onNavigateToInformacionPersonal = { navController.navigate(Screen.InformacionPersonal.route) }
             )
         }
 
@@ -125,6 +127,14 @@ fun AppNavigation() {
                 onNavigateToSobreNosotros = { navController.navigate(Screen.SobreNosotros.route) },
                 onNavigateToPerfil = { navController.navigate(Screen.Perfil.route) }
             )
+        }
+
+        composable(Screen.InformacionPersonal.route) {
+             InformacionPersonalScreen(
+                 onNavigateToMenu = { navController.navigate(Screen.Menu.route) },
+                 onNavigateToSobreNosotros = { navController.navigate(Screen.SobreNosotros.route) },
+                 onNavigateToPerfil = { navController.navigate(Screen.Perfil.route) }
+             )
         }
 
         composable(Screen.Order.route) {
