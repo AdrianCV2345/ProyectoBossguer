@@ -6,8 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.bossguer.features.registro.presentation.RegistroScreen
-import com.example.bossguer.features.registro.presentation.RegistroViewModel
+import com.example.bossguer.features.SobreNosotros.presentation.SobreNosotrosScreen
 import com.example.bossguer.features.carrito.ui.CartViewModel
 import com.example.bossguer.features.carrito.ui.OrderScreen
 import com.example.bossguer.features.carrito.ui.OrderSuccessScreen
@@ -18,6 +17,8 @@ import com.example.bossguer.features.loginPart.presentation.LoginPartScreen
 import com.example.bossguer.features.loginPart.presentation.LoginPartViewModel
 import com.example.bossguer.features.menu.presentation.MenuScreen
 import com.example.bossguer.features.menu.presentation.MenuViewModel
+import com.example.bossguer.features.registro.presentation.RegistroScreen
+import com.example.bossguer.features.registro.presentation.RegistroViewModel
 import com.example.bossguer.features.registro.presentation.SplashScreenRegister.RegisterSplashScreen
 import org.koin.androidx.compose.koinViewModel
 
@@ -80,7 +81,16 @@ fun AppNavigation() {
                 cartViewModel = cartViewModel,
                 onBack = { navController.popBackStack() },
                 onCartClick = { navController.navigate(Screen.Order.route) },
-                onProductAdded = {}
+                onProductAdded = {},
+                onNavigateToSobreNosotros = { navController.navigate(Screen.SobreNosotros.route) },
+                onNavigateToMenu = { /* Ya estamos aquí */ }
+            )
+        }
+
+        composable(Screen.SobreNosotros.route) {
+            SobreNosotrosScreen(
+                onNavigateToMenu = { navController.navigate(Screen.Menu.route) },
+                onNavigateToSobreNosotros = { /* Ya estamos aquí */ }
             )
         }
 
@@ -88,7 +98,7 @@ fun AppNavigation() {
             OrderScreen(
                 cartViewModel = cartViewModel,
                 onBack = { navController.popBackStack() },
-                onOrderSuccess = { navController.navigate("orderSuccess") } // Puedes crear un Screen.OrderSuccess.route para esto
+                onOrderSuccess = { navController.navigate("orderSuccess") } 
             )
         }
         composable("orderSuccess") {

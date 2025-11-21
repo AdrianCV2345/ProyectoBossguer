@@ -42,7 +42,6 @@ import com.example.bossguer.R
 import com.example.bossguer.features.carrito.data.Product
 import com.example.bossguer.features.carrito.ui.CartViewModel
 
-// Data class para representar una hamburguesa, facilita la gestión
 data class Burger(val name: String, val desc: String, val price: String, val imageRes: Int)
 
 @Composable
@@ -51,9 +50,10 @@ fun MenuScreen(
     cartViewModel: CartViewModel,
     onBack: () -> Unit,
     onCartClick: () -> Unit,
-    onProductAdded: () -> Unit
+    onProductAdded: () -> Unit,
+    onNavigateToSobreNosotros: () -> Unit,
+    onNavigateToMenu: () -> Unit
 ) {
-    // Lista de hamburguesas (puedes mover esto a tu ViewModel)
     val burgers = listOf(
         Burger("Bossguer", "La original, inigualable e inconfundible.", "35,00 Bs.", R.drawable.burger_bossguer),
         Burger("La Jefaza", "Cargada con todo, solo para los verdaderos jefes.", "37,00 Bs.", R.drawable.burger_jefaza),
@@ -67,16 +67,14 @@ fun MenuScreen(
             .fillMaxSize()
             .background(Color.White)
     ) {
-        // Usamos LazyColumn para un rendimiento óptimo en listas largas y para facilitar el espaciado
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 64.dp), // Padding para no superponer con la barra inferior
+                .padding(bottom = 64.dp), 
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(24.dp) // 1. AUMENTADA LA SEPARACIÓN ENTRE ELEMENTOS
+            verticalArrangement = Arrangement.spacedBy(24.dp) 
         ) {
             item {
-                // Contenedor para la imagen principal y los encabezados
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -88,7 +86,6 @@ fun MenuScreen(
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
                     )
-                    // 3. ENCABEZADO CENTRADO
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -111,13 +108,12 @@ fun MenuScreen(
                             textAlign = TextAlign.Center
                         )
                     }
-                    // Barra de navegación superior
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(Color(0xFFF4D8CD).copy(alpha = 0.85f))
                             .align(Alignment.TopCenter)
-                            .statusBarsPadding(), // <- AQUÍ ESTÁ LA SOLUCIÓN
+                            .statusBarsPadding(),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -146,7 +142,6 @@ fun MenuScreen(
                 }
             }
             item {
-                // Título de la sección "HAMBURGUESAS"
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -161,10 +156,9 @@ fun MenuScreen(
                     )
                 }
             }
-            // Lista de tarjetas de hamburguesas
             items(burgers) { burger ->
                 val product = Product(
-                    id = burger.name, // Using name as ID is not ideal, but works for this scope
+                    id = burger.name, 
                     name = burger.name,
                     price = burger.price.replace(",", ".").replace(" Bs.", "").trim().toDouble(),
                     image = burger.imageRes
@@ -185,7 +179,6 @@ fun MenuScreen(
             }
 
             item {
-                // Sección final con aclaración, bebidas y extras
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -247,7 +240,6 @@ fun MenuScreen(
                 }
             }
         }
-        // Barra de navegación inferior fija
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -257,10 +249,10 @@ fun MenuScreen(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            BottomNavItem(R.drawable.ic_nosotros, "")
-            BottomNavItem(R.drawable.ic_menu, "")
-            BottomNavItem(R.drawable.ic_chat, "")
-            BottomNavItem(R.drawable.ic_cuenta, "")
+            BottomNavItem(iconRes = R.drawable.ic_nosotros, label = "Sobre Nosotros", onClick = onNavigateToSobreNosotros)
+            BottomNavItem(iconRes = R.drawable.ic_menu, label = "Menu", onClick = onNavigateToMenu)
+            BottomNavItem(iconRes = R.drawable.ic_chat, label = "Chat", onClick = {})
+            BottomNavItem(iconRes = R.drawable.ic_cuenta, label = "Cuenta", onClick = {})
         }
     }
 }
@@ -275,7 +267,7 @@ fun MenuBurgerCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp), // Padding horizontal para el card
+            .padding(horizontal = 16.dp), 
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
@@ -292,7 +284,7 @@ fun MenuBurgerCard(
             )
 
             Column(
-                modifier = Modifier.padding(12.dp) // Espaciado interno
+                modifier = Modifier.padding(12.dp) 
             ) {
                 Text(
                     text = burger.name,
@@ -304,7 +296,7 @@ fun MenuBurgerCard(
                 Text(
                     text = burger.desc,
                     fontSize = 14.sp,
-                    color = Color(0xFF555555) // Gris oscuro
+                    color = Color(0xFF555555) 
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
@@ -319,7 +311,6 @@ fun MenuBurgerCard(
                         modifier = Modifier.weight(1f)
                     )
 
-                    // 2. CONTADOR DE CANTIDAD REDISEÑADO
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -327,15 +318,15 @@ fun MenuBurgerCard(
                         Button(
                             onClick = onRemoveFromCart,
                             enabled = quantityInCart > 0,
-                            modifier = Modifier.size(38.dp), // Botón más grande
+                            modifier = Modifier.size(38.dp), 
                             shape = CircleShape,
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFC107)), // Fondo amarillo
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFC107)), 
                             contentPadding = PaddingValues(0.dp)
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_minus),
                                 contentDescription = "Menos",
-                                tint = Color.Black ,// Ícono negro
+                                tint = Color.Black ,
                                 modifier = Modifier.size(24.dp)
                             )
                         }
@@ -350,15 +341,15 @@ fun MenuBurgerCard(
 
                         Button(
                             onClick = onAddToCart,
-                            modifier = Modifier.size(38.dp), // Botón más grande
+                            modifier = Modifier.size(38.dp), 
                             shape = CircleShape,
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFC107)), // Fondo amarillo
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFC107)), 
                             contentPadding = PaddingValues(0.dp)
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_plus),
                                 contentDescription = "Más",
-                                tint = Color.Black, // Ícono negro
+                                tint = Color.Black, 
                                 modifier = Modifier.size(24.dp)
                             )
                         }
@@ -370,7 +361,7 @@ fun MenuBurgerCard(
 }
 
 @Composable
-fun MenuDrinkRow(name: String, price: String, onAddToCart: () -> Unit) { // <-- 1. AÑADIDO onAddToCart
+fun MenuDrinkRow(name: String, price: String, onAddToCart: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -392,7 +383,7 @@ fun MenuDrinkRow(name: String, price: String, onAddToCart: () -> Unit) { // <-- 
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(end = 8.dp)
             )
-            IconButton(onClick = onAddToCart) { // <-- 2. USADO onAddToCart
+            IconButton(onClick = onAddToCart) { 
                 Icon(
                     painter = painterResource(id = R.drawable.ic_plus),
                     contentDescription = "Agregar",
@@ -406,7 +397,7 @@ fun MenuDrinkRow(name: String, price: String, onAddToCart: () -> Unit) { // <-- 
 }
 
 @Composable
-fun BottomNavItem(iconRes: Int, label: String) {
+fun BottomNavItem(iconRes: Int, label: String, onClick: () -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             modifier = Modifier
@@ -415,7 +406,7 @@ fun BottomNavItem(iconRes: Int, label: String) {
             contentAlignment = Alignment.Center
         ) {
 
-            IconButton(onClick = { /* TODO: Agregar */ }) {
+            IconButton(onClick = onClick) {
                 Icon(
                     painter = painterResource(id = iconRes),
                     contentDescription = label,
